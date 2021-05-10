@@ -14,6 +14,7 @@ class ArticlesController < ApplicationController
     end
     def create
         @article= Article.new(article_params)#necesario para resivir el articulo
+        @article.user = User.first
         if @article.save
             flash[:notice] = "Article was created successfully"
             redirect_to article_path(@article) #esto nos reenvia a el path que esogemos, el article_path nos dice a que controlador va , para verlos se usa el router en la consola
@@ -25,7 +26,7 @@ class ArticlesController < ApplicationController
     def update
      #   @article=Article.find(params[:id]) #esto es para apuntar a que articulo se le va a cambiar la info
         if @article.update(article_params) #con esto se cambia la info 
-            flash[:notice]= "articlegas updated successfully"
+            flash[:notice]= "article was updated successfully"
             redirect_to @article
          else
             render "edit"
