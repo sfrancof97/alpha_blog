@@ -3,6 +3,22 @@ class UsersController < ApplicationController
         @user = User.new
         
     end
+    def show
+        @user=User.find(params[:id])
+        @articles= @user.articles
+    end
+    def edit
+        @user= User.find(params[:id])
+    end
+    def update
+        @user= User.find(params[:id])
+        if @user.update(user_params)
+            flash[:notice] ="your account has benn updated"
+            redirect_to articles_path
+        else
+            render "edit"
+        end
+    end
    def create
        @user= User.new(user_params)
        if @user.save
@@ -11,8 +27,9 @@ class UsersController < ApplicationController
 
        else
         render "new"
-        
-       end
+      
+    end
+
 
 
    end
