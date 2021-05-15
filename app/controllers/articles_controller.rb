@@ -4,7 +4,9 @@ class ArticlesController < ApplicationController
         #byebug #esto me sirvepara parar el servidor aca y si coloco params me muestra los parametros o params[:id] me da el id que uso 
     end
     def index
-        @articles = Article.all    
+        @articles = Article.paginate(page: params[:page], per_page: 500)
+
+        
     end
     def new
         @article = Article.new #necesario para que la primera vez que se renderiza la pagina exista un @article en el if de la vista
