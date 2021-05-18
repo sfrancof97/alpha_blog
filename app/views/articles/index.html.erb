@@ -1,5 +1,5 @@
-<div id="page-content">
-    <h1 class= "text-center mt-4">Articles list  </h1>    <div class="container">
-    <%= will_paginate @articles %>
-    <%=render "article" %>
+<h1 class= "text-center mt-4">Articles list  </h1>    
+<div class="container">
+    <%= will_paginate(@articles) %>
+    <%= render "article" %>
 </div>

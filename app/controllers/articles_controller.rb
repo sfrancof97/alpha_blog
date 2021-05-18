@@ -1,11 +1,12 @@
 class ArticlesController < ApplicationController
-    before_action:set_article, only:[:show,:edit,:update,:destroy] #lo que hace es que ejecuta la funcoion seleccionada al inicio de cada metodo mencionado en []
+    before_action :set_article, only:[:show,:edit,:update,:destroy] #lo que hace es que ejecuta la funcoion seleccionada al inicio de cada metodo mencionado en []
+    before_action :require_user, except: [:show , :index]
+    before_action :require_same_user, only: [:edit, :update, :destroy]
     def show
         #byebug #esto me sirvepara parar el servidor aca y si coloco params me muestra los parametros o params[:id] me da el id que uso 
     end
     def index
-        @articles = Article.paginate(page: params[:page], per_page: 500)
-
+        @articles = Article.paginate(page: 1, per_page: 5)
         
     end
     def new
@@ -16,7 +17,7 @@ class ArticlesController < ApplicationController
     end
     def create
         @article= Article.new(article_params)#necesario para resivir el articulo
-        @article.user = User.first
+        @article.user = current_user
         if @article.save
             flash[:notice] = "Article was created successfully"
             redirect_to article_path(@article) #esto nos reenvia a el path que esogemos, el article_path nos dice a que controlador va , para verlos se usa el router en la consola
@@ -47,5 +48,12 @@ class ArticlesController < ApplicationController
     end
     def article_params
         params.require(:article).permit(:title, :description)
+    end
+    def require_same_user
+
+            if current_user != @article.user #esto me sirve para que otro ususario no edite otro articulo por medio de la url
+                flash[:alert]="you can only edit or delete your own articles"
+                redirect_to @article
+            end
     end
 end

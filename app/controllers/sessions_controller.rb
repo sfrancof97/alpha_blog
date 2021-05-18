@@ -5,8 +5,8 @@ class SessionsController < ApplicationController
     def create
         user= User.find_by(email: params[:session][:email].downcase)
         if user && user.authenticate(params[:session][:password])
-
-            session[:user_id] = user.id #con esto es que mantenemos la sesion iniciada
+            
+            session[:user_id] = user.id #con esto es que mantenemos la sesion iniciada y le asignamos en los parametros el usuario 
 
            flash[:notice]="logged in"
            redirect_to user
